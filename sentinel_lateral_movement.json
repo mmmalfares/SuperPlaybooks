@@ -1,0 +1,49 @@
+{
+  "playbook_name": "Lateral Movement Detection",
+  "description": "Detects lateral movement through abnormal authentication patterns",
+  "steps": [
+    {
+      "step": "Run KQL Query",
+      "action": "RunQuery",
+      "parameters": {
+        "query": "SecurityEvent | where EventID == 4624 and AccountType == 'User' and LogonType == 3"
+      }
+    },
+    {
+      "step": "Enrich with Risk Score",
+      "action": "GetUserRiskScore",
+      "parameters": {
+        "source": "AzureAD"
+      }
+    },
+    {
+      "step": "Create Sentinel Incident",
+      "action": "CreateIncident",
+      "parameters": {
+        "severity": "High"
+      }
+    },
+    {
+      "step": "Auto Remediate",
+      "action": "DisableUserAccount",
+      "parameters": {
+        "identityProvider": "AzureAD"
+      }
+    },
+    {
+      "step": "Notify Team",
+      "action": "SendEmail",
+      "parameters": {
+        "to": "SOC_Team@domain.com",
+        "subject": "Lateral Movement Detected"
+      }
+    },
+    {
+      "step": "Generate Report",
+      "action": "CreateReport",
+      "parameters": {
+        "template": "LateralMovementSummary"
+      }
+    }
+  ]
+}
