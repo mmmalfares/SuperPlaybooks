@@ -1,0 +1,52 @@
+id: phishing_email_investigation
+name: Phishing Email Investigation
+description: Automates phishing email triage and response.
+tasks:
+  - name: Ingest Alert
+    type: email_ingestion
+    description: Ingest phishing email alert from SIEM or email gateway.
+  
+  - name: Extract IOCs
+    type: extract_iocs
+    description: Extract URLs, IPs, attachments, and subject from the email.
+
+  - name: Enrich IOCs
+    type: threat_intel_enrichment
+    inputs:
+      sources: [VirusTotal, PhishTank]
+  
+  - name: Sandbox Analysis
+    type: file_analysis
+    inputs:
+      sandbox_engine: FireEye
+  
+  - name: Search Similar Emails
+    type: mailbox_search
+    inputs:
+      recipient_user: true
+
+  - name: Create Incident
+    type: create_ticket
+    inputs:
+      severity: dynamic_from_threat_score
+  
+  - name: Quarantine Email
+    type: email_quarantine
+    inputs:
+      email_platform: Microsoft 365
+  
+  - name: Block Indicators
+    type: firewall_block
+    inputs:
+      targets: [IP, URL]
+
+  - name: Notify Analyst
+    type: send_notification
+    inputs:
+      channel: Slack
+
+  - name: Manual Review
+    type: analyst_review
+
+  - name: Close Incident
+    type: close_ticket
