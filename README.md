@@ -1,10 +1,5 @@
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 # SuperPlaybooks
-A curated collection of actionable cybersecurity workflows, threat detection rules, and automation frameworks for modern SecOps teams.
-# Super Playbooks
-
-[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
-
 A curated list of automation and security playbooks for SOC, SOAR, and incident response teams.
 
 ---
